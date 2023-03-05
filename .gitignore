@@ -7,5 +7,7 @@
 # Unignore all dirs
 !*/
 
+*.dSYM/
+
 .vscode/
 *.exe
