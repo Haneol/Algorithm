@@ -18,18 +18,21 @@ int main() {
     
     cin >> removed;
     queue<int> q;
+    bool flag;
     if(removed != root) {
         q.push(root);
         while(!q.empty()) {
             tmp = q.front(); q.pop();
 
-            if(tree[tmp].empty()) {
-                count++; continue; 
+            flag = false;
+            for(int i : tree[tmp]) {
+                if(i != removed) {
+                    q.push(i);
+                    flag = true;
+                }
             }
 
-            for(int i : tree[tmp]) {
-                if(i != removed) q.push(i);
-            }
+            if(!flag) count++;
         }
     }
 
