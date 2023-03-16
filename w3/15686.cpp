@@ -2,6 +2,7 @@
 using namespace std;
 
 vector<pair<int, int> > house, chicken;
+int dist[100];
 
 int main() {
     ios::sync_with_stdio(0);
@@ -22,11 +23,20 @@ int main() {
     for(int i = 0; i < chicken.size() - m; i++) select.emplace_back(0);
     for(int i = 0; i < m; i++) select.emplace_back(1);
 
+    int sum = INT32_MAX;
     do {
-        
+        fill(&dist[0], &dist[100], INT32_MAX);
+        for(int i = 0; i < select.size(); i++) {
+            if(select[i] == 1) {
+                for(int j = 0; j < house.size(); j++) {
+                    dist[j] = min(dist[j], abs(house[j].first - chicken[i].first) + abs(house[j].second - chicken[i].second));
+                }
+            }
+        }
+        sum = min(sum, accumulate(dist, dist + house.size(), 0));
     } while(next_permutation(select.begin(), select.end()));
 
-    cout << '\n';
+    cout << sum << '\n';
 
     return 0;
 }
