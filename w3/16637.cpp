@@ -1,95 +1,101 @@
 #include<bits/stdc++.h>
 using namespace std;
 
+int n;
+int num[19];
+bool visited[19];
+int n_num[19];
+
+int calcul(int arr[], int x) {
+    int output = arr[0] - '0';
+    for(int i = 1; i < x - 1; i+=2) {
+        switch(arr[i]) {
+            case '+':
+                output += arr[i+1] - '0';
+                break;
+            case '-':
+                output -= arr[i+1] - '0';
+                break;
+            case '*':
+                output *= arr[i+1] - '0';
+                break;
+        }
+    }
+    return output + '0';
+}
+
 int main() {
     ios::sync_with_stdio(0);
     cin.tie(0);
 
-    int n;
     cin >> n;
 
-    char str[n];
-    cin >> str;
+    int ch;
+    for(int i = 0; i < n; i++) {
+        ch = cin.get();
+        while(ch == ' ' || ch == '\n' || ch == EOF) ch = cin.get();
+        num[i] = ch;
+    };
 
     if(n == 1) {
-        cout << str[0] << '\n';
+        cout << num[0] - '0' << '\n';
         return 0;
     }
 
-    int v[n/2];
-    stack<long long> s, s2;
-    vector<long long> res;
-    long long x, k, size, value;
-    long long output = LLONG_MIN;
+    vector<int> v(n/2, 0);
+
+    int output = calcul(num, n) - '0';
+    int tmp[3];
     bool flag, flag2;
-    for(int i = n/2-1; i >= 0; i--) {
+    for(int i = (n+1)/4; i >= 0; i--) {
         v[i] = 1;
-        do{
+        do {
+            for(int z : v)
             flag = false; flag2 = false;
-            for(int y : v) {
-                if(y == 1) {
-                    if(flag) {
+            for(int x : v) {
+                if(flag) {
+                    if(x == 1) {
                         flag2 = true;
                         break;
                     }
-                    flag = true;
-                } else flag = false;
+                    else flag = false;
+                }
+                else if(x == 1) flag = true;
             }
             if(flag2) continue;
 
-            for(int c = n - 1; c >= 0; c--) s.push(str[c]);
+            int j, k = 0;
+            memset(visited, false, sizeof(visited));
+            for(j = 0; j < n - 2; j++) {
+                if(visited[j]) continue;
 
-            k = 0;
-            while(!s.empty()) {
-                x = s.top(); s.pop();
-                if(x == '*' || x == '+' || x == '-') {
-                    if(v[k] == 1) {
-                        switch(x) {
-                            case '*':
-                                x = ((s2.top() - '0') * (s.top() - '0')) + '0';
-                                s2.pop();
-                                break;
-                            case '+':
-                                x = ((s2.top() - '0') + (s.top() - '0')) + '0';
-                                s2.pop();
-                                break;
-                            case '-':
-                                x = ((s2.top() - '0') - (s.top() - '0')) + '0';
-                                s2.pop();
-                                break;
-                        }
-                        s.pop();
-                    }
+                if(v[(j+1)/2] && (num[j+1] == '+' || num[j+1] == '-' || num[j+1] == '*')) {
+                    tmp[0] = num[j];
+                    tmp[1] = num[j+1];
+                    tmp[2] = num[j+2];
+
+                    n_num[k] = calcul(tmp, 3);
+
+                    visited[j] = true;
+                    visited[j+1] = true;
+                    visited[j+2] = true;
+                } else n_num[k] = num[j];
+                k++;
+            }
+            for(; j < n; j++) {
+                if(!visited[j]){
+                    n_num[k] = num[j];
                     k++;
                 }
-                s2.push(x);
             }
-
-            size = s2.size();
-            res.clear();
-            while(!s2.empty()) {
-                s.push(s2.top()); s2.pop();
-            }
-
-            while(!s.empty()) {
-                res.push_back(s.top()); s.pop();
-            }
-
-            value = res[0] - '0';
-            for(int j = 1; j < size; j++) {
-                if(res[j] == '+')
-                    value += res[j+1] - '0';
-                else if(res[j] == '-')
-                    value -= res[j+1] - '0';
-                else if(res[j] == '*')
-                    value *= res[j+1] - '0';
-            }
-
-            output = max(output, value);
-        } while(next_permutation(v, v + n/2));
+            output = max(output, calcul(n_num, k) - '0');
+        } while(next_permutation(v.begin(), v.end()));
     }
 
     cout << output << '\n';
+
+
+    
 
     return 0;
 }
