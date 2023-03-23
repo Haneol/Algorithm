@@ -1,8 +1,7 @@
 #include<bits/stdc++.h>
 using namespace std;
 
-int times[100001];
-int counts[100001];
+bool visited[100001];
 
 int main() {
     ios::sync_with_stdio(0);
@@ -11,14 +10,27 @@ int main() {
     int n, k;
     cin >> n >> k;
 
-    queue<int> q;
-    q.push(n);
+    queue<pair<int, int> > q;
+    q.push({n,0});
+    visited[n] = true;
 
-    int x;
+    int x, times, v_times = 0, cnt = 0;
     int dx[3];
     while(!q.empty()) {
-        x = q.front();
+        x = q.front().first;
+        times = q.front().second;
         q.pop();
+
+        visited[x] = true;
+
+        if(x == k) {
+            if(v_times == 0) {
+                v_times = times;
+                cnt++;
+            } else if(v_times > 0 && times == v_times) {
+                cnt++;
+            }
+        }
 
         dx[0] = x + 1;
         dx[1] = x - 1;
@@ -27,27 +39,12 @@ int main() {
         for(int d = 0; d < 3; d++) {
             if(dx[d] < 0 || dx[d] > 100000) continue;
 
-            if(counts[dx[d]] == 0) {
-                counts[dx[d]] = counts[x] == 0 ? 1 : counts[x];
-                times[dx[d]] = times[x] + 1;
-                q.push(dx[d]);
-            } else if(times[dx[d]] > times[x]) {
-                times[dx[d]] = times[x] + 1;
-                counts[dx[d]]++;
-            }
+            if(!visited[dx[d]]) q.push({dx[d], times + 1});
         }
     }
 
-    // for(int t = 0; t <= k * 2; t++) {
-    //     cout << times[t] << ' ';
-    // }
-    // cout << '\n';
-    // for(int t = 0; t <= k * 2; t++) {
-    //     cout << counts[t] << ' ';
-    // }
-    // cout << '\n';
-
-    cout << times[k] << ' ' << counts[k] << '\n';
+    cout << v_times << '\n';
+    cout << cnt << '\n';
 
     return 0;
 }
