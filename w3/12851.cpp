@@ -17,8 +17,7 @@ int main() {
     int x, times, v_times = 0, cnt = 0;
     int dx[3];
     while(!q.empty()) {
-        x = q.front().first;
-        times = q.front().second;
+        tie(x, times) = q.front();
         q.pop();
 
         visited[x] = true;
