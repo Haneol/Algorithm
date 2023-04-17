@@ -10,7 +10,6 @@ int main() {
     cin >> n;
 
     stack<int> s;
-
     int res = 0, cnt = 0;
     while(n--) {
         do {c = cin.get();} while(c == ' ' || c == '\n');
