@@ -3,15 +3,15 @@ using namespace std;
 
 int n, k, x;
 int arr[101];
+queue<int> loc[101];
 
 bool cmp(int a, int b) {
-    int tmp = x + 1;
-    while(tmp < k) {
-        if(arr[tmp] == a) return false;
-        else if(arr[tmp] == b) return true;
-        tmp++;
-    }
-    return true;
+    int cmp1, cmp2;
+    while(!loc[a].empty() && loc[a].front() <= x) loc[a].pop();
+    while(!loc[b].empty() && loc[b].front() <= x) loc[b].pop();
+    cmp1 = loc[a].empty() ? 999 : loc[a].front();
+    cmp2 = loc[b].empty() ? 999 : loc[b].front();
+    return cmp1 > cmp2;
 }
 
 bool find_v(vector<int> v, int k) {
@@ -39,7 +39,10 @@ int main() {
 
     cin >> n >> k;
 
-    for(int i = 0; i < k; i++) cin >> arr[i];
+    for(int i = 0; i < k; i++) {
+        cin >> arr[i];
+        loc[arr[i]].push(i);
+    }
 
     int res = 0;
     vector<int> v;
