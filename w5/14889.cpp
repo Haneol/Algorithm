@@ -21,7 +21,8 @@ int main() {
         sum[0] = 0; sum[1] = 0;
         for(int i = 0; i < n; i++)
             for(int j = i+1; j < n; j++)
-                if(v[i] == v[j]) sum[v[i]] += (arr[i][j] + arr[j][i]);
+                if(v[i] == v[j]) 
+                    sum[v[i]] += (arr[i][j] + arr[j][i]);
         
         res = min(res, abs(sum[0] - sum[1]));
     } while(next_permutation(v.begin(), v.end()));
