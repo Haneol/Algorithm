@@ -2,7 +2,7 @@
 
 using namespace std;
 
-vector<int_least16_t> graph[1001];
+vector<int> graph[1001];
 bool visited[2][1001];
 
 int main() {

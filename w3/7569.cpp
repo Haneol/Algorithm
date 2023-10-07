@@ -21,9 +21,10 @@ int main() {
                 if (tomato[i][j][k] == 1) q.push({k,j,i});
             }
 
-    int size = q.size();
+    int size;
     int cnt = 0;
     while(!q.empty()) {
+        size = q.size();
         while(size--) {
             tie(x, y, z) = q.front();
             q.pop();
@@ -39,7 +40,6 @@ int main() {
                 }
             }
         }
-        size = q.size();
         cnt++;
     }
     
