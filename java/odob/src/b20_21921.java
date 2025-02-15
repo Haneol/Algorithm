@@ -2,7 +2,7 @@ import java.io.*;
 import java.util.*;
 
 // 10분
-public class b19_21921 {
+public class b20_21921 {
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 
