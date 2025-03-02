@@ -1,7 +1,7 @@
 import java.util.*;
 import java.io.*;
 
-// 2, 답
+// 50분, 답안 확인
 public class b26_1138 {
     public static int[] peopleList;
     public static int[] list;
