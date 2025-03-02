@@ -2,7 +2,7 @@ import java.util.*;
 import java.io.*;
 
 // 2, 답
-public class b24_1138 {
+public class b26_1138 {
     public static int[] peopleList;
     public static int[] list;
 
