@@ -1,7 +1,7 @@
 import java.io.*;
 import java.util.*;
 
-// 43
+// 30분
 public class b30_2531 {
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
