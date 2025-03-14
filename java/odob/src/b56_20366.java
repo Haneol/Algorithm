@@ -1,7 +1,7 @@
 import java.io.*;
 import java.util.*;
 
-// 29
+// 26분
 public class b56_20366 {
     static int n;
     static int[] snowball;
