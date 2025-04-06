@@ -1,19 +1,18 @@
 import java.io.*;
 import java.util.*;
 
-// 11:40
+// 4시간, 힌트 참고
 public class b75_1799 {
     static int n;
     static int[][] chess;
-    static int[][] tmp;
-    static int res;
+    static int res1, res2;
+    static Deque<int[]> visited = new ArrayDeque<>();
 
     public static void main(String[] args) throws Exception {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 
         n = Integer.parseInt(br.readLine());
         chess = new int[n][n];
-        tmp = new int[n][n];
         for (int i = 0; i < n; i++) {
             StringTokenizer st = new StringTokenizer(br.readLine());
             for (int j = 0; j < n; j++) {
@@ -21,83 +20,57 @@ public class b75_1799 {
             }
         }
 
-        boolean[][] visited = new boolean[n][n];
-        bt(0, 0, visited);
+        bt1(0,0, 0);
+        bt2(0,0, 0);
 
-        System.out.println(res);
+        System.out.println(res1 + res2);
 
         br.close();
     }
 
-    static void bt(int y, int cnt, boolean[][] visited) {
-        if(y == n) {
-
-//            if(cnt == 8) {
-//                for (int i = 0; i < n; i++) {
-//                    for (int j = 0; j < n; j++) {
-//                        System.out.print(tmp[i][j] + " ");
-//                    }
-//                    System.out.println();
-//                }
-//                System.out.println();
-//            }
-
-            res = Math.max(res, cnt);
+    static void bt1(int y, int x, int cnt) {
+        if (y >= n - 1 && x >= n - 1) {
             return;
         }
 
-        boolean flag;
-        for (int i = 0; i < (1 << n); i++) {
-            flag = false;
-            for (int j = 0; j < n; j++) {
-                if ((i & (1 << j)) > 0 && (visited[y][j] || chess[y][j] == 0)) {
-                    flag = true;
-                    break;
-                }
-            }
+        for (int i = y; i < n; i++) {
+            for (int j = i % 2; j < n; j+=2) {
+                if (check(i, j) || chess[i][j] == 0) continue;
 
-            if (!flag) {
-                for (int a = 0; a < n; a++) {
-                    if ((i & (1 << a)) > 0) {
-                        tmp[y][a] = 1;
-                    }
-                }
-
-                bt(y + 1, cnt + Integer.bitCount(i), checkRow(y, i, visited));
-
-                for (int a = 0; a < n; a++) {
-                    tmp[y][a] = 0;
-                }
+                res1 = Math.max(res1, cnt + 1);
+                visited.offerLast(new int[]{i, j});
+                bt1(i, j, cnt + 1);
+                visited.pollLast();
             }
         }
     }
 
-    static boolean[][] checkRow(int y, int x, boolean[][] visited) {
-        boolean[][] newVisited = new boolean[n][n];
-        for(int i = 0; i < n; i++) {
-            for(int j = 0; j < n; j++) {
-                newVisited[i][j] = visited[i][j];
-            }
+    static void bt2(int y, int x, int cnt) {
+        if (y >= n - 1 && x >= n - 2) {
+            return;
         }
 
+        for (int i = y; i < n; i++) {
+            for (int j = (i + 1) % 2; j < n; j+=2) {
+                if (check(i, j) || chess[i][j] == 0) continue;
+
+                res2 = Math.max(res2, cnt + 1);
+                visited.offerLast(new int[]{i, j});
+                bt2(i, j, cnt + 1);
+                visited.pollLast();
+            }
+        }
+    }
+
+    static boolean check(int y, int x) {
         int x1, x2;
-        for (int i = 0; i < n; i++) {
-            if ((x & (1 << i)) > 0) {
-                for (int j = 0; j < n; j++) {
-                    x1 = i + (j - y);
-                    x2 = i - (j - y);
 
-                    if (x1 >= 0 && x1 < n) {
-                        newVisited[j][x1] = true;
-                    }
-
-                    if (x2 >= 0 && x2 < n) {
-                        newVisited[j][x2] = true;
-                    }
-                }
+        for (int[] pos : visited) {
+            if (Math.abs(pos[0] - y) == Math.abs(pos[1] - x)) {
+                return true;
             }
         }
 
-        return newVisited;
+        return false;
     }
 }
